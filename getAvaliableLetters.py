@@ -1,3 +1,5 @@
+#Author: Joshua Steier, to be used with hangman game
+
 def getAvailableLetters(lettersGuessed):
    
     notGuessed = []
