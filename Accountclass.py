@@ -27,4 +27,11 @@ class Account:
         return self.__id
     def setID(self, id):
         self.__id= id
-    def 
+    def getinitialBalance(self):
+        return self.__initialbalance
+    def setinitialBalance(self, initialbalance):
+        self.__initialbalance= initialbalance
+    def getannualIR(self):
+        return self.__annualInterestRate
+    def setannualIR(self, annualInterestRate):
+        self.__annualInterestRate= annualInterestRate 
