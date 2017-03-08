@@ -19,19 +19,31 @@ Created on Fri Mar  3 19:55:18 2017
     # a method named deposit
 #begin with defining the class
 class Account:
-    def __init__(self, id = 0, initalbalance= 100, annualInterestRate= 0):
+    def __init__(self, id = 0, balance= 100, annualInterestRate= 0):
         self.__id= id
-        self.__initalbalance= balance
+        self.__initialbalance= balance
         self.__annualInterestRate= annualInterestRate
     def getID(self):
+        #getID returns the ID of account
         return self.__id
     def setID(self, id):
+        #setID: given an id, sets the current id to be the id inputted
         self.__id= id
     def getinitialBalance(self):
+        #returns the initial balance
         return self.__initialbalance
-    def setinitialBalance(self, initialbalance):
-        self.__initialbalance= initialbalance
+    def setinitialBalance(self, balance):
+        self.__initialbalance= balance
     def getannualIR(self):
         return self.__annualInterestRate
     def setannualIR(self, annualInterestRate):
-        self.__annualInterestRate= annualInterestRate 
+        self.__annualInterestRate= annualInterestRate
+    def getMonthlyInterestRate(self):
+        dummyvar= self.__annualInterestRate / 100
+        return dummyvar / 12
+    def getMonthlyInterest(self):
+        return self.__initialbalance * self.getMonthlyInterestRate
+    def withdraw(self, amount):
+        return self.__initialbalance - amount
+    def deposit(self, amount):
+        return self.__initialbalance + amount
