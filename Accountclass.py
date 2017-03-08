@@ -2,7 +2,7 @@
 """
 Created on Fri Mar  3 19:55:18 2017
 
-@author: steierjo
+@author: Joshua Steier, Joshua Talamayan, Davis Cook
 """
 
 #Creation of the ATM Machine, step 1: creation of the account class
