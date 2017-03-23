@@ -5,6 +5,65 @@ Created on Wed Mar 22 22:50:39 2017
 @author: steierjo
 """
 
+
+
+
+
+##Create an online store simulation with following characteristics:
+"""You have a following system of products:
+ Products -> Digital
+          -> Physical
+          -> Subscription
+
+Each Product has name, description, price, review, category, and delivery method (code for digital product),
+special or promotion attached
+
+Digital Products categories: giftcards, steam codes, ebooks
+Physical: computers, monitors, textbooks..etc
+Subscription: classes, antiviruses, netflix, etc
+
+Two types of users customer and admin
+On login page, user should be able to create account (customer account)
+1) Customer:
+Prompt user for username and password (store these in dictionary "users" along with balance and purchase history)
+After that give user an option to select category.
+Allow user to add funds to his/hers wallet
+
+Show products and allow user to select particular product with a number or arrow keys
+On product page: show product, reviews and price and in-stock quantity.
+    Allow user to add product review
+    Allow user to add product to user's shopping card and continue navigation through the store.
+    If product is unavailable display error to a user
+
+
+On all pages, user should be able to checkout and quit the store.
+For Physical Products: During checkout prompt user to insert address
+For digital or subscription : email
+In case of digital product return Code associated with actual product
+
+Make sure that after user quits your store application does not stop, but rather goes to login screen
+
+
+2) Admin
+1.should be able to add/remove categories
+2.should be able to add/remove a product to/from a category
+3.Set a price on particular product
+4.Re stock particular item in store
+5.View logs:
+Logs should look like this:
+
+Purchase History
+Timestamp         Product Name        Confirmation Code     Price     Store Revenue
+
+Product Listings
+Category          Product Name        Product Type          Items left
+
+User Information
+User Name           Name              User Type             Last Login          Exit Time
+
+
+
+If you want you can add more to this list, like GUI, or any other functionality """
 import uuid
 
 ########################
