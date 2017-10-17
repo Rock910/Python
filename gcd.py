@@ -13,3 +13,15 @@ while k <= n1 and k <= n2:
     k= k+1
     #print out the results
 print("The greatest common divisor for " + str(n1) + " and " + str(n2) + "  is  " + str(gcd))
+
+
+#another gcd  but using recursion.
+#10/17/2017 @ 2:21 PM
+def gcdRecur(a,b):
+    #a, b positive ints, and returns a pos int, the gcd
+    #let's deal with base case
+    if b ==0:
+        return a
+    else:
+        return gcdRecur(b, a%b)
+    
