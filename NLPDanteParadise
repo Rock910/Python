@@ -1,0 +1,143 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Fri Aug  2 16:14:47 2019
+
+@author: Administrator
+"""
+# 8.2.19 4:15 PM
+#researchDante11: Going to do LDA on Paradise, might switch to more topics if need be
+
+# -*- coding: utf-8 -*-
+"""
+Created on Fri Aug  2 15:06:20 2019
+
+@author: Administrator
+"""
+
+
+"""
+Created on Thu Aug  1 09:57:57 2019
+
+@author: Administrator
+"""
+
+import gensim
+import os
+from gensim.models.wrappers import LdaMallet
+import re
+import numpy as np
+import pandas as pd
+from pprint import pprint
+import gensim.corpora as corpora
+from gensim.utils import simple_preprocess
+from gensim.models import CoherenceModel
+import pyLDAvis
+import pyLDAvis.gensim
+
+import nltk
+from nltk.corpus import stopwords
+from nltk.probability import FreqDist
+from nltk.stem.snowball import SnowballStemmer
+from nltk.tokenize import word_tokenize
+from textblob import TextBlob
+#import polyglot
+
+from collections import Counter
+
+
+from nltk.sentiment.vader import SentimentIntensityAnalyzer
+from nltk.tokenize.treebank import TreebankWordDetokenizer
+from urllib import request
+import matplotlib.pyplot as plt
+#from wordcloud import WordCloud, STOPWORDS, ImageColorGenerator
+#from PIL import Image
+from wordcloud import WordCloud
+
+
+#some downloads
+nltk.download('punkt')
+nltk.download('stopwords')
+nltk.download('vader_lexicon')
+sid= SentimentIntensityAnalyzer()
+nltk.download('averaged_perceptron_tagger')
+nltk.download('maxent_ne_chunker')
+
+nltk.download('words')
+
+#import the url from gutenberg address
+#url= "http://www.gutenberg.org/cache/epub/41537/pg41537.txt" # inferno
+#replacing url with purgatory one
+#url= "http://www.gutenberg.org/cache/epub/8795/pg8795.txt"
+
+#request method 
+#response = request.urlopen(url)
+
+
+#text= response.read().decode('utf8')
+
+#try to get the txt to work
+
+text= open("danteparadiserefined.txt").read()
+
+
+
+
+
+
+import spacy 
+nlp= spacy.load('en_core_web_sm')
+
+
+#prepare stopwords
+
+#NLTK stop words
+from nltk.corpus import stopwords
+stop_words = stopwords.words('english')
+#need to add gutenberg to stop words
+tokens= word_tokenize(text)
+tokens = [token for token in tokens if token not in '.,:;<>!?[]()`"\'']
+
+tokens = [token for token in tokens if token not in stop_words]
+
+
+
+#try to split the data
+
+dataset= [d.split() for d in tokens]
+
+new_dict= corpora.Dictionary(dataset)
+
+
+
+#Create Corpus
+texts= dataset
+
+corpus = [new_dict.doc2bow(text) for text in texts]
+
+
+
+
+#build the LDA model
+
+lda_model = gensim.models.ldamodel.LdaModel(corpus=corpus,
+                                           id2word=new_dict,
+                                           num_topics=14, 
+                                           random_state=100,
+                                           update_every=1,
+                                           chunksize=100,
+                                           passes=10,
+                                           alpha='auto',
+                                           per_word_topics=True)
+## Compute Coherence Score
+##coherence_model_lda = CoherenceModel(model=lda_model, texts=dataset, dictionary=new_dict, coherence='c_v')
+##coherence_lda = coherence_model_lda.get_coherence()
+##print('\nCoherence Score: ', coherence_lda)
+pyLDAvis.enable_notebook()
+vis = pyLDAvis.gensim.prepare(lda_model, corpus, new_dict)
+pyLDAvis.show(vis)      
+
+#try to make an LDA model with mallet
+#os.environ['MALLET_HOME']= 'C:\\mallet'
+#mallet_path= 'C:\\Users\\Administrator\\Documents\\mallet-2.0.8\\bin\\mallet'
+#ldamallet= gensim.models.wrappers.LdaMallet(mallet_path, corpus= corpus, num_topics= 10, id2word= new_dict)                                
+                                          
