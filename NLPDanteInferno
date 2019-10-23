@@ -1,0 +1,157 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Tue Jul 16 10:09:27 2019
+
+@author: Administrator
+"""
+
+#researchDante2
+# -*- coding: utf-8 -*-
+"""
+Created on Mon Jul 15 15:36:35 2019
+
+@author: Administrator
+"""
+
+#Research: Dante's Inferno Using NLP, to be potentially extended to     
+#Purgatario and paradiso
+
+#9:25AM on 7/17/19, try to do a sentiment analysis
+
+
+
+#start by importing the packages needed
+
+import nltk
+import pandas as pd
+from nltk.corpus import stopwords
+from nltk.probability import FreqDist
+from nltk.stem.snowball import SnowballStemmer
+from nltk.tokenize import word_tokenize
+from textblob import TextBlob
+#import polyglot
+
+
+from nltk.sentiment.vader import SentimentIntensityAnalyzer
+from nltk.tokenize.treebank import TreebankWordDetokenizer
+from urllib import request
+import matplotlib.pyplot as plt
+#from wordcloud import WordCloud, STOPWORDS, ImageColorGenerator
+#from PIL import Image
+from wordcloud import WordCloud
+
+
+#some downloads
+nltk.download('punkt')
+nltk.download('stopwords')
+nltk.download('vader_lexicon')
+sid= SentimentIntensityAnalyzer()
+nltk.download('averaged_perceptron_tagger')
+
+#import the url from gutenberg address
+url= "https://www.gutenberg.org/cache/epub/997/pg997.txt"
+
+#request method 
+response = request.urlopen(url)
+
+
+text= response.read().decode('utf8')
+
+#tokenize the text
+
+tokens= word_tokenize(text)
+print(len(tokens))
+tokens = [token for token in tokens if token not in '.,:;<>!?[]()`"\'']
+print(len(tokens))
+
+#filter out stop words
+stop_words= stopwords.words("italian")
+tokens = [token for token in tokens if token not in stop_words]
+print(len(tokens))
+
+
+
+
+
+
+#stem words using snowballstemmer
+
+stemmer= SnowballStemmer("italian")
+print(" ".join(SnowballStemmer.languages))
+stems= [stemmer.stem(word) for word in tokens]
+print(stems)
+    
+
+#Generate a wordcloud object
+wordcloud= WordCloud(background_color= "white", max_words= 5000, contour_width= 3, contour_color= 'steelblue')
+#generate the wordcloud(based on stems this time)
+#for stems, want to make them into text strings
+
+#detokenize stems 
+detokenized_stems= TreebankWordDetokenizer().detokenize(stems)
+#works now as detokenized, tokens-> back to sentences
+
+
+
+
+
+wordcloud.generate(detokenized_stems)
+wordcloud.to_image()
+
+#for stems, doesn't work too well, need to detokenize 
+#stem_sentences= [[' '.join(i)] for i in stems]
+
+
+#now move to calculating word frequencies
+fdist= FreqDist(stems)
+print(fdist.most_common(200))
+new_frame= pd.DataFrame(list(fdist.items()), columns = ["Word","Frequency"])
+sorted_frame= new_frame.sort_values(by= 'Frequency',  ascending=False )
+cleaned_frame= sorted_frame.iloc[0:16]
+#works as of 2:42 pm 7/30/19
+
+cleaned_frame.plot.bar(x="Word", y="Frequency")
+
+
+#good start
+#now visualizations-> more advanced NLP techniques and associate with text
+#Can also extend this to purgatario and paradiso, what are the most common words there?
+
+#visualize most common words
+
+#import matplotlib.pyplot as plt
+#fdist.plot(30,cumulative=False)
+#plt.show()
+
+#fdist.plot(30, cumulative= True)
+#plt.show()
+
+
+
+
+#Looking at long words: length > 15
+#V= set(stems)
+#long_stems= [w for w in V if len(w)> 12]
+#words typicallty aren't that long?
+#print(sorted(long_stems))
+
+
+
+
+#generate a wordcloud
+#wordcloud= WordCloud().generate(text)
+
+#plt.imshow(wordcloud, interpolation= 'bilinear')
+#plt.axis("off")
+#plt.show()
+
+#sentiment analysis: 9:31 AM 7/17/19
+
+scores= sid.polarity_scores(text)
+print(scores)
+
+
+#textblob usage for fun 3:10 7/26/19
+
+
+
